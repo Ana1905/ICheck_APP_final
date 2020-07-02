@@ -25,5 +25,4 @@ public class SelectProductsActivity extends AppCompatActivity {
                     .commit();
         }
     }
-
 }

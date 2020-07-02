@@ -1,19 +1,21 @@
-<androidx.cardview.widget.CardView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="200sp"
     android:layout_height="200sp"
+    android:padding="8dp"
+    android:background="@color/colorAccent">
+
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="5sp"
-    android:gravity="center"
-    >
+    android:gravity="center">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <TextView
             android:id="@+id/TextViewItemNumber"
@@ -38,7 +40,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.214" />
-
 
         <ImageView
             android:id="@+id/imageViewSaleIcon"
@@ -99,5 +100,6 @@
             app:layout_constraintVertical_bias="0.952" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.cardview.widget.CardView>
+
+</LinearLayout>
