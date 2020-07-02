@@ -2,16 +2,16 @@ package models;
 
 import java.util.UUID;
 
-public class Shop {
-    private UUID id_shop;
+public class Store {
+    private UUID id_store;
     private String name;
 
     public UUID getId_shop() {
-        return id_shop;
+        return id_store;
     }
 
     public void setId_shop(UUID id_shop) {
-        this.id_shop = id_shop;
+        this.id_store = id_shop;
     }
 
     public String getName() {
