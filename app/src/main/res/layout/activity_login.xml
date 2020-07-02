@@ -12,7 +12,7 @@
         android:layout_width="150sp"
         android:layout_height="150sp"
         android:contentDescription="@string/sign_in_logo_image"
-        
+        android:src="@mipmap/ic_launcher_foreground"
         app:layout_constraintBottom_toTopOf="@+id/sign_in_welcome_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
