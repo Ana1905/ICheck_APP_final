@@ -52,4 +52,5 @@
     <string name="date_example">Date Example</string>
     <string name="total_example">Total Example</string>
     <string name="Stores">Choose a store</string>
+    <string name="search_text">Search for a product</string>
 </resources>

@@ -1,42 +1,33 @@
 package fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.GridView;
 
+import com.example.icheck_app_final.Adapter;
 import com.example.icheck_app_final.R;
-import com.example.icheck_app_final.SignUpActivity;
 
 import java.util.ArrayList;
-
-import models.Product;
-
-
+import java.util.List;
+//hola david
 public class SelectProductsFragment extends Fragment {
+    RecyclerView datalist;
+    List<String> mProductname;
 
-    private GridView mGrid;
-    //private GridAddapter mAddapter;
-
-    public static SelectProductsFragment newInstance(Context context) {
+        public static SelectProductsFragment newInstance(Context context) {
         return new SelectProductsFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
     @Override
@@ -44,13 +35,19 @@ public class SelectProductsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_select_products, container, false);
 
+        datalist = view.findViewById(R.id.recycler_products);
+        mProductname= new ArrayList<>();
 
-        ArrayList<Product> array= new ArrayList<>();
-        //Hola Ana
+        mProductname.add("Leche");
+        mProductname.add("tortillas");
+        mProductname.add("coca");
 
-        mGrid = view.findViewById(R.id.select_grid);
-       // mAddapter = new GridAdapter(this.getContext(),array);
-      //  mGrid.setAdapter(mAddapter);
+        Adapter adapter = new Adapter(getActivity(), mProductname);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2,
+                GridLayoutManager.VERTICAL,false);
+
+        datalist.setLayoutManager(gridLayoutManager);
+        datalist.setAdapter(adapter);
 
         // Inflate the layout for this fragment
         return view;
