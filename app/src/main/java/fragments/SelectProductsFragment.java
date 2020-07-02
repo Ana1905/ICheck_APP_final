@@ -46,8 +46,7 @@ public class SelectProductsFragment extends Fragment {
 
 
         ArrayList<Product> array= new ArrayList<>();
-
-
+        //Hola Ana
 
         mGrid = view.findViewById(R.id.select_grid);
        // mAddapter = new GridAdapter(this.getContext(),array);
