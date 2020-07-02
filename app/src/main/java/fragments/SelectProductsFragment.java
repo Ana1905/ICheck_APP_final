@@ -80,6 +80,7 @@ public class SelectProductsFragment extends Fragment {
                 super(inflater.inflate(R.layout.item_products, parent, false));
                 //Wiring up
                 mDescription = itemView.findViewById(R.id.textViewDescription);
+                itemView.setOnClickListener(this);
             }
 
         private void bind(String product){
