@@ -51,5 +51,8 @@ public class SelectProductsFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+
+        //Hola Ana
+
     }
 }
