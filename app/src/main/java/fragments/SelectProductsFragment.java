@@ -27,12 +27,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import labs.QueueSingleton;
 import labs.UserLab;
 import models.Product;
 
 public class SelectProductsFragment extends Fragment {
     private RecyclerView datalist;
-    private List<Product> mProducts;
+    private static List<Product> mProducts;
 
     public static SelectProductsFragment newInstance(Context context) {
         return new SelectProductsFragment();
@@ -86,6 +87,7 @@ public class SelectProductsFragment extends Fragment {
 
             }
         });
+        QueueSingleton.get(getActivity()).addToRequestQueue(request);
     }
 
     private void updateUI(){
