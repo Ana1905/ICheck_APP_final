@@ -72,9 +72,12 @@ public class SelectProductsFragment extends Fragment {
                         product.setId_category(object.getInt("id_category"));
                         product.setDescription(object.getString("description"));
                         product.setDays_of_life(object.getInt("days_of_life"));
+                        mProducts.add(product);
                     }
                 } catch (JSONException e){
-
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                } finally {
+                    updateUI();
                 }
             }
         }, new Response.ErrorListener() {
