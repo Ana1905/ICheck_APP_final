@@ -29,9 +29,11 @@
         <activity
             android:name=".SignUpActivity"
             android:parentActivityName=".LoginActivity" />
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

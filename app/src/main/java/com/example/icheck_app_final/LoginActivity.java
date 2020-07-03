@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        loadPosition();
+        //loadPosition();
 
         file = this.getSharedPreferences(FILE_NAME, MODE_PRIVATE);
         if(file.contains(CURRENT_USER)){
@@ -173,7 +173,7 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
         finish();
     }
 
-    public void loadPosition(){
+    /*public void loadPosition(){
         //Request permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -188,5 +188,5 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
             COORD_LAT = location.getLatitude();
             COORD_LONG = location.getLongitude();
         }
-    }
+    }*/
 }
