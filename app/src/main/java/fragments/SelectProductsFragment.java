@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -28,17 +28,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import labs.ProductLab;
 import labs.QueueSingleton;
 import labs.UserLab;
 import models.Product;
 
 public class SelectProductsFragment extends Fragment {
-    private int quantity=0;
     private RecyclerView datalist;
     private static List<Product> mProducts;
 
-
+    Button addItem_btn;
+    Button subItem_btn;
+    TextView qtyItems_TV;
+    View itemCard_LL;
 
     public static SelectProductsFragment newInstance(Context context) {
         return new SelectProductsFragment();
@@ -48,7 +49,7 @@ public class SelectProductsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProducts = new ArrayList<>();
-
+        getProducts();
     }
 
     @Override
@@ -57,6 +58,30 @@ public class SelectProductsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_select_products, container, false);
         datalist = view.findViewById(R.id.recycler_products);
+        addItem_btn = view.findViewById(R.id.add_item);
+        subItem_btn = view.findViewById(R.id.sub_item);
+        qtyItems_TV = view.findViewById(R.id.TextViewItemNumber);
+        itemCard_LL = view.findViewById(R.id.itemCard);
+
+
+        addItem_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ProdutLab.itemPlusOne
+            }
+
+
+        });
+
+        subItem_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ProductLab.itemMinusOne
+            }});
+
+        qtyItems_TV.setText(/*ProductLab.quantity*/);
+
+
 
         // Inflate the layout for this fragment
         return view;
@@ -113,38 +138,7 @@ public class SelectProductsFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getContext(), mProduct.getDescription(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), mProduct.getDescription(), Toast.LENGTH_LONG).show();
         }
     }
-
-    public void EditProducts(RequestQueue mQueue, int quantity){
-        mProducts.clear();
-        String username = UserLab.get().getCurrentUser().getUsername();
-        String url = "https://checkitdatabase.000webhostapp.com/search-products.php?user=" + quantity;
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONArray array = new JSONArray(response);
-                    for (int i=0; i<array.length(); i++){
-                        JSONObject object = array.getJSONObject(i);
-                        Product product = new Product();
-                        product.setId_product(object.getInt("quantity"));
-                        mProducts.add(product);
-                    }
-                } catch (JSONException e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                } finally {
-                    updateUI();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        QueueSingleton.get(getActivity()).addToRequestQueue(request);
-    }
-
 }

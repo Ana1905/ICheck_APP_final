@@ -32,10 +32,8 @@ public class ProductLab {
     }
 
 
-    public void EditProduct(RequestQueue mQueue, String id_product, int quantity) {
-        id_product="hola";
-        quantity=1;
-        String queryEditProduct = "https://checkitdatabase.000webhostapp.com/edit-product-list.php?id_product=" + id_product + "&quantity=" + quantity;
+    public void EditProduct(RequestQueue mQueue, String id_product, int quantity, int id_list) {
+        String queryEditProduct = "https://checkitdatabase.000webhostapp.com/edit-product-list.php?id_product=" + id_product + "&quantity=" + quantity + "&id_list=" + id_list;
         JsonRequest mJsonRequest = new JsonObjectRequest(Request.Method.GET, queryEditProduct, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -50,11 +48,21 @@ public class ProductLab {
         mQueue.add(mJsonRequest);
     }
 
-    public void Productplus1(String id_product){
-
+    public void productPlusOne(String id_product, int id_list){
+        int newQuantity = getQuantity(id_product, id_list);
+        newQuantity++;
+        EditProduct(Queue,id_product, newQuantity, id_list);
     }
 
-    public void getQuantity(){
+    public void productMinusOne(String id_product, int id_list){
+        int newQuantity = getQuantity(id_product, id_list);
+        newQuantity++;
+        EditProduct(Queue,id_product, newQuantity, id_list);
+    }
 
+    public int getQuantity(String id_product, int id_list){
+        /*
+        * SELECT quantity FROM shopping_list WHERE ID_product = '{$id_product}' AND ID_list = '{$id_list}'
+        * */
     }
 }
