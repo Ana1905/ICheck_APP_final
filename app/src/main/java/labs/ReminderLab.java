@@ -32,7 +32,6 @@ public class ReminderLab {
     }
 
 
-
     public void removeReminder(RequestQueue mQueue, int id){
         String username = UserLab.get().getCurrentUser().getUsername();
         String queryDeleteReminder = "https://checkitdatabase.000webhostapp.com/remove_reminder.php?user=" + username + "&id=" + id;

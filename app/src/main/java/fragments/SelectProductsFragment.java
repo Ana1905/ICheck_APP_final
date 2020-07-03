@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -27,13 +28,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import labs.ProductLab;
 import labs.QueueSingleton;
 import labs.UserLab;
 import models.Product;
 
 public class SelectProductsFragment extends Fragment {
+    private int quantity=0;
     private RecyclerView datalist;
     private static List<Product> mProducts;
+
+
 
     public static SelectProductsFragment newInstance(Context context) {
         return new SelectProductsFragment();
@@ -43,7 +48,7 @@ public class SelectProductsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProducts = new ArrayList<>();
-        getProducts();
+
     }
 
     @Override
@@ -57,38 +62,7 @@ public class SelectProductsFragment extends Fragment {
         return view;
     }
 
-    private void getProducts(){
-        mProducts.clear();
-        String username = UserLab.get().getCurrentUser().getUsername();
-        String url = "https://checkitdatabase.000webhostapp.com/search-products.php?user=" + username;
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONArray array = new JSONArray(response);
-                    for (int i=0; i<array.length(); i++){
-                        JSONObject object = array.getJSONObject(i);
-                        Product product = new Product();
-                        product.setId_product(object.getInt("id_product"));
-                        product.setId_category(object.getInt("id_category"));
-                        product.setDescription(object.getString("description"));
-                        product.setDays_of_life(object.getInt("days_of_life"));
-                        mProducts.add(product);
-                    }
-                } catch (JSONException e){
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                } finally {
-                    updateUI();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
-            }
-        });
-        QueueSingleton.get(getActivity()).addToRequestQueue(request);
-    }
 
     private void updateUI(){
         if (mProducts.size()>0){
@@ -142,4 +116,35 @@ public class SelectProductsFragment extends Fragment {
             Toast.makeText(getContext(), mProduct.getDescription(), Toast.LENGTH_LONG).show();
         }
     }
+
+    public void EditProducts(RequestQueue mQueue, int quantity){
+        mProducts.clear();
+        String username = UserLab.get().getCurrentUser().getUsername();
+        String url = "https://checkitdatabase.000webhostapp.com/search-products.php?user=" + quantity;
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray array = new JSONArray(response);
+                    for (int i=0; i<array.length(); i++){
+                        JSONObject object = array.getJSONObject(i);
+                        Product product = new Product();
+                        product.setId_product(object.getInt("quantity"));
+                        mProducts.add(product);
+                    }
+                } catch (JSONException e){
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                } finally {
+                    updateUI();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        QueueSingleton.get(getActivity()).addToRequestQueue(request);
+    }
+
 }
