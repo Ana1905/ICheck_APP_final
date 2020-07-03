@@ -194,7 +194,12 @@ public class AccountSettingsDialog extends DialogFragment {
                     Toast.makeText(getContext(), "There was an error connecting with server", Toast.LENGTH_LONG).show();
                 }
             });
-            QueueSingleton.get(getActivity()).addToRequestQueue(searchRequest);
+
+            if (username.equals(UserLab.get().getCurrentUser().getUsername())){
+                QueueSingleton.get(getActivity()).addToRequestQueue(updateRequest);
+            } else {
+                QueueSingleton.get(getActivity()).addToRequestQueue(searchRequest);
+            }
         }
     }
 

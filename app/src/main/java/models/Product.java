@@ -4,30 +4,24 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Product {
-    private UUID id_product;
-    private UUID id_category;
+    private int id_product;
+    private int id_category;
     private String description;
     private int days_of_life;
 
-    public Product(){
-        id_product = UUID.randomUUID();
-        id_category = UUID.randomUUID();
-        description = "puto virus";
-        days_of_life = 2;
-    }
-    public UUID getId_product() {
+    public int getId_product() {
         return id_product;
     }
 
-    public void setId_product(UUID id_product) {
+    public void setId_product(int id_product) {
         this.id_product = id_product;
     }
 
-    public UUID getId_category() {
+    public int getId_category() {
         return id_category;
     }
 
-    public void setId_category(UUID id_category) {
+    public void setId_category(int id_category) {
         this.id_category = id_category;
     }
 
