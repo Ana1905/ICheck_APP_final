@@ -84,6 +84,7 @@ public class SettingsFragment extends Fragment {
         }
         switch(requestCode){
             case REQUEST_ACCOUNT:
+                Toast.makeText(getContext(), "RESULT OK", Toast.LENGTH_LONG).show();
                 updateAccount(data);
                 break;
             case REQUEST_APPEARANCE:
@@ -107,8 +108,10 @@ public class SettingsFragment extends Fragment {
         assert username != null;
         assert pwd != null;
         assert email != null;
-        if (name.isEmpty() || username.isEmpty() || pwd.isEmpty() || email.isEmpty())
+        if (name.isEmpty() || username.isEmpty() || pwd.isEmpty() || email.isEmpty()) {
+            Toast.makeText(getContext(), "Empty stuff", Toast.LENGTH_LONG).show();
             validation = false;
+        }
 
         assert conf_pwd != null;
         if (!conf_pwd.isEmpty()) {
