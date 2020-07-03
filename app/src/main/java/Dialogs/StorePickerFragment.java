@@ -38,8 +38,6 @@ public class StorePickerFragment extends DialogFragment implements AdapterView.O
 
         //para poner lo delen el arreglo de items
 
-
-
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.Stores)
