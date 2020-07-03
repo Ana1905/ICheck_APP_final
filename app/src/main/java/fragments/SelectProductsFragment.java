@@ -69,6 +69,9 @@ public class SelectProductsFragment extends Fragment {
                         JSONObject object = array.getJSONObject(i);
                         Product product = new Product();
                         product.setId_product(object.getInt("id_product"));
+                        product.setId_category(object.getInt("id_category"));
+                        product.setDescription(object.getString("description"));
+                        product.setDays_of_life(object.getInt(""));
                     }
                 } catch (JSONException e){
 

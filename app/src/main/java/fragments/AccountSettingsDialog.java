@@ -32,14 +32,11 @@ import models.User;
 
 public class AccountSettingsDialog extends DialogFragment {
 
-    EditText mEditTextName;
-    EditText mEditTextUsername;
-    EditText mEditTextEmail;
-    EditText mEditTextPassword;
-    EditText mEditTextConfirmPassword;
-
-    private static final String FILE_NAME = "check it session";
-    private static final String CURRENT_USER =  "username";
+    private EditText mEditTextName;
+    private EditText mEditTextUsername;
+    private EditText mEditTextEmail;
+    private EditText mEditTextPassword;
+    private EditText mEditTextConfirmPassword;
 
     public static AccountSettingsDialog newInstance(){
         return new AccountSettingsDialog();
@@ -82,7 +79,7 @@ public class AccountSettingsDialog extends DialogFragment {
                 .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        validate();
+                        sendResult(Activity.RESULT_OK);
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -106,107 +103,17 @@ public class AccountSettingsDialog extends DialogFragment {
         mEditTextEmail.setText(email);
     }
 
-    private void validate(){
-        boolean validation = true;
-        final String name = mEditTextName.getText().toString();
-        final String username = mEditTextUsername.getText().toString();
-        final String password = mEditTextPassword.getText().toString();
-        final String email = mEditTextEmail.getText().toString();
-        String confirmPassword;
-
-        if (name.isEmpty()){
-            mEditTextName.setError("Name is required");
-            validation = false;
-        }
-
-        if (username.isEmpty()){
-            mEditTextName.setError("Username is required");
-            validation = false;
-        }
-
-        if (password.isEmpty()){
-            mEditTextPassword.setError("Password is required");
-            validation = false;
-        }
-
-        if (email.isEmpty()){
-            mEditTextEmail.setError("Email is required");
-            validation = false;
-        }
-
-        if (mEditTextConfirmPassword.getVisibility() == View.VISIBLE) {
-            confirmPassword = mEditTextConfirmPassword.getText().toString();
-            if (confirmPassword.isEmpty()){
-                mEditTextConfirmPassword.setError("Confirm Password is required");
-                validation = false;
-            }
-            if (validation){
-                if (password.equals(confirmPassword)){
-                    mEditTextConfirmPassword.setError("Do not match");
-                    validation = false;
-                }
-            }
-        }
-
-        if (validation){
-            String searchUser = "https://checkitdatabase.000webhostapp.com/search-user.php?user=" + username + "&pwd=" + password;
-            String updateUser = "https://checkitdatabase.000webhostapp.com/update-user.php?user=" + username + "&pwd=" + password +
-                    "&email=" + email + "&name=" + name;
-
-            final StringRequest updateRequest = new StringRequest(Request.Method.GET, updateUser, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
-                    User user = UserLab.get().getCurrentUser();
-                    user.setName(name);
-                    user.setPassword(password);
-                    user.setUsername(username);
-                    user.setEmail(email);
-                    SharedPreferences file = getActivity().getSharedPreferences(FILE_NAME, Activity.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = file.edit();
-                    editor.remove(CURRENT_USER);
-                    editor.apply();
-                    editor.putString(CURRENT_USER, username);
-                    editor.apply();
-                    sendResult(Activity.RESULT_OK);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getActivity(), "There was an error connecting with server", Toast.LENGTH_LONG).show();
-                }
-            });
-
-            StringRequest searchRequest = new StringRequest(Request.Method.GET, searchUser, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    if (!response.equals("Unfounded")) {
-                        //Username not exists
-                        QueueSingleton.get(getActivity()).addToRequestQueue(updateRequest);
-                        mEditTextUsername.setError("This username already exists");
-                    } else {
-                        Toast.makeText(getContext(), "Username already exists", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getContext(), "There was an error connecting with server", Toast.LENGTH_LONG).show();
-                }
-            });
-
-            if (username.equals(UserLab.get().getCurrentUser().getUsername())){
-                QueueSingleton.get(getActivity()).addToRequestQueue(updateRequest);
-            } else {
-                QueueSingleton.get(getActivity()).addToRequestQueue(searchRequest);
-            }
-        }
-    }
 
     private void sendResult(int result){
         if(getTargetFragment() == null){
             return;
         }
-        getTargetFragment().onActivityResult(getTargetRequestCode(), result, null);
+        Intent intent = new Intent();
+        intent.putExtra("username", mEditTextUsername.getText().toString());
+        intent.putExtra("name", mEditTextName.getText().toString());
+        intent.putExtra("password", mEditTextPassword.getText().toString());
+        intent.putExtra("conf_password", mEditTextConfirmPassword.getText().toString());
+        intent.putExtra("email", mEditTextEmail.getText().toString());
+        getTargetFragment().onActivityResult(getTargetRequestCode(), result, intent);
     }
 }
