@@ -173,7 +173,7 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
         finish();
     }
 
-    /*public void loadPosition(){
+    public void loadPosition(){
         //Request permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -188,5 +188,5 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
             COORD_LAT = location.getLatitude();
             COORD_LONG = location.getLongitude();
         }
-    }*/
+    }
 }
