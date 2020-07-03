@@ -149,12 +149,14 @@ public class AccountSettingsDialog extends DialogFragment {
         }
 
         if (validation){
-            String searchUser = "";
-            String updateUser = "";
+            String searchUser = "https://checkitdatabase.000webhostapp.com/search-user.php?user=" + username + "&pwd=" + password;
+            String updateUser = "https://checkitdatabase.000webhostapp.com/update-user.php?user=" + username + "&pwd=" + password +
+                    "&email=" + email + "&name=" + name;
 
             final StringRequest updateRequest = new StringRequest(Request.Method.GET, updateUser, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
                     User user = UserLab.get().getCurrentUser();
                     user.setName(name);
                     user.setPassword(password);
@@ -178,11 +180,13 @@ public class AccountSettingsDialog extends DialogFragment {
             StringRequest searchRequest = new StringRequest(Request.Method.GET, searchUser, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    if (response.equals("Exists")) {
-                        //Username exists
-                        mEditTextUsername.setError("This username already exists");
-                    } else if (response.equals("Not Exists"))
+                    if (!response.equals("Unfounded")) {
+                        //Username not exists
                         QueueSingleton.get(getActivity()).addToRequestQueue(updateRequest);
+                        mEditTextUsername.setError("This username already exists");
+                    } else {
+                        Toast.makeText(getContext(), "Username already exists", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override

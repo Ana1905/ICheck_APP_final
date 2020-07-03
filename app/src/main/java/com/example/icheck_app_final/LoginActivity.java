@@ -106,7 +106,6 @@ public class LoginActivity extends AppCompatActivity implements Response.Listene
         });
     }
 
-
     private void signIn(){
         if (!validate())
             return;
