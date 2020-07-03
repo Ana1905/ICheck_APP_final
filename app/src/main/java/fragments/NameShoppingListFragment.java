@@ -69,14 +69,14 @@ public class NameShoppingListFragment extends Fragment {
         final StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "mandando", Toast.LENGTH_LONG ).show();
+                Intent intent = new Intent(getActivity(), SelectProductsActivity.class);
+                startActivity(intent);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "mandando", Toast.LENGTH_LONG ).show();
-                Intent intent = new Intent(getActivity(), SelectProductsActivity.class);
-                startActivity(intent);
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
         QueueSingleton.get(getContext()).addToRequestQueue(request);
