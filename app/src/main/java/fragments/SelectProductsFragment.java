@@ -14,14 +14,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.icheck_app_final.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import labs.UserLab;
+import models.Product;
+
 public class SelectProductsFragment extends Fragment {
     private RecyclerView datalist;
-    private List<String> mProductname;
+    private List<Product> mProducts;
 
     public static SelectProductsFragment newInstance(Context context) {
         return new SelectProductsFragment();
@@ -30,10 +41,8 @@ public class SelectProductsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mProductname= new ArrayList<>();
-        mProductname.add("Leche");
-        mProductname.add("tortillas");
-        mProductname.add("coca");
+        mProducts = new ArrayList<>();
+        getProducts();
     }
 
     @Override
@@ -43,11 +52,41 @@ public class SelectProductsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_select_products, container, false);
         datalist = view.findViewById(R.id.recycler_products);
 
-        datalist.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        datalist.setAdapter(new ProductsAdapter());
-
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void getProducts(){
+        mProducts.clear();
+        String username = UserLab.get().getCurrentUser().getUsername();
+        String url = "https://checkitdatabase.000webhostapp.com/search-products.php?user=" + username;
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray array = new JSONArray(response);
+                    for (int i=0; i<array.length(); i++){
+                        JSONObject object = array.getJSONObject(i);
+                        Product product = new Product();
+                        product.setId_product(object.getInt("id_product"));
+                    }
+                } catch (JSONException e){
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+    }
+
+    private void updateUI(){
+        if (mProducts.size()>0){
+            datalist.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+            datalist.setAdapter(new ProductsAdapter());
+        }
     }
 
     private class ProductsAdapter extends RecyclerView.Adapter<ProductsHolder>{
@@ -61,20 +100,20 @@ public class SelectProductsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ProductsHolder holder, int position) {
-            String product = mProductname.get(position);
+            Product product = mProducts.get(position);
             holder.bind(product);
         }
 
         @Override
         public int getItemCount() {
-            return mProductname.size();
+            return mProducts.size();
         }
     }
 
     private class ProductsHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private String mProduct;
         //Controllers
         private TextView mDescription;
+        private Product mProduct;
 
             private ProductsHolder(LayoutInflater inflater, ViewGroup parent){
                 super(inflater.inflate(R.layout.item_products, parent, false));
@@ -83,15 +122,16 @@ public class SelectProductsFragment extends Fragment {
                 itemView.setOnClickListener(this);
             }
 
-        private void bind(String product){
+        private void bind(Product product){
             mProduct = product;
+            String description = product.getDescription();
             //Update stuff
-            mDescription.setText(mProduct);
+            mDescription.setText(description);
         }
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(getContext(), mProduct, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), mProduct.getDescription(), Toast.LENGTH_LONG).show();
         }
     }
 }
