@@ -33,7 +33,7 @@ import models.Product;
 
 public class SelectProductsFragment extends Fragment {
     private RecyclerView datalist;
-    private List<Product> mProducts;
+    private static List<Product> mProducts;
 
     public static SelectProductsFragment newInstance(Context context) {
         return new SelectProductsFragment();
