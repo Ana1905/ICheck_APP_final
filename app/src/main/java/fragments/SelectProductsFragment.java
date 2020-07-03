@@ -71,7 +71,7 @@ public class SelectProductsFragment extends Fragment {
                         product.setId_product(object.getInt("id_product"));
                         product.setId_category(object.getInt("id_category"));
                         product.setDescription(object.getString("description"));
-                        product.setDays_of_life(object.getInt(""));
+                        product.setDays_of_life(object.getInt("days_of_life"));
                     }
                 } catch (JSONException e){
 

@@ -96,7 +96,7 @@ public class SettingsFragment extends Fragment {
 
     private void updateAccount(Intent intent){
         final String username = intent.getStringExtra("username");
-        final String pwd = intent.getStringExtra("pwd");
+        final String pwd = intent.getStringExtra("password");
         final String email = intent.getStringExtra("email");
         String conf_pwd = intent.getStringExtra("conf_password");
         final String name = intent.getStringExtra("name");
