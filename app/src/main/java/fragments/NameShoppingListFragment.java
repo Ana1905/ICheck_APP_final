@@ -14,10 +14,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.icheck_app_final.R;
 import com.example.icheck_app_final.SelectProductsActivity;
 import com.example.icheck_app_final.SettingsActivity;
 import com.example.icheck_app_final.SignUpActivity;
+
+import labs.QueueSingleton;
+import labs.UserLab;
 
 
 public class NameShoppingListFragment extends Fragment {
@@ -31,9 +38,6 @@ public class NameShoppingListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
     @Override
@@ -48,9 +52,7 @@ public class NameShoppingListFragment extends Fragment {
         mContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "mandando", Toast.LENGTH_LONG ).show();
-                Intent intent = new Intent(getActivity(), SelectProductsActivity.class);
-                startActivity(intent);
+                createList();
             }
         });
 
@@ -58,5 +60,26 @@ public class NameShoppingListFragment extends Fragment {
         return view;
     }
 
+    private void createList() {
+        String listName = mEditTextNameList.getText().toString();
+        String username = UserLab.get().getCurrentUser().getUsername();
+
+        String url = "https://checkitdatabase.000webhostapp.com/add-list.php?user=" + username + "&list_name=" + listName;
+
+        final StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "mandando", Toast.LENGTH_LONG ).show();
+                Intent intent = new Intent(getActivity(), SelectProductsActivity.class);
+                startActivity(intent);
+            }
+        });
+        QueueSingleton.get(getContext()).addToRequestQueue(request);
+    }
 }
 
