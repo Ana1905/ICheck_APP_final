@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -121,12 +122,20 @@ public class SelectProductsFragment extends Fragment {
     private class ProductsHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         //Controllers
         private TextView mDescription;
+        private Button mAdd;
+        private Button mRemove;
+        private TextView mCount;
+
         private Product mProduct;
 
             private ProductsHolder(LayoutInflater inflater, ViewGroup parent){
                 super(inflater.inflate(R.layout.item_products, parent, false));
                 //Wiring up
                 mDescription = itemView.findViewById(R.id.textViewDescription);
+                mAdd = itemView.findViewById(R.id.add_products_item);
+                mRemove = itemView.findViewById(R.id.remove_products_item);
+                mCount = itemView.findViewById(R.id.TextViewItemNumber);
+
                 itemView.setOnClickListener(this);
             }
 
@@ -135,11 +144,54 @@ public class SelectProductsFragment extends Fragment {
             String description = product.getDescription();
             //Update stuff
             mDescription.setText(description);
+
+            mAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String count = mCount.getText().toString();
+                    int i = Integer.parseInt(count) + 1;
+                    updateItem(mProduct.getId_product(), i);
+                    mCount.setText(i + "");
+                }
+            });
+            mRemove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String count = mCount.getText().toString();
+                    int i = Integer.parseInt(count);
+                    if (i==0) {
+                        Toast.makeText(getContext(), "There are already zero items for this product selected",
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    i--;
+                    updateItem(mProduct.getId_category(), i);
+                    mCount.setText(i + "");
+                }
+            });
         }
 
         @Override
         public void onClick(View v) {
             Toast.makeText(getContext(), mProduct.getDescription(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void updateItem(int id, int quantity){
+        String url = "https://checkitdatabase.000webhostapp.com/edit-product-list.php?id_product=" + id
+                + "&quantity=" + quantity;
+
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getContext(), "Done", Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+        QueueSingleton.get(getActivity()).addToRequestQueue(request);
     }
 }
