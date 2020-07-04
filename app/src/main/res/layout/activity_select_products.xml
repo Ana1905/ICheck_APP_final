@@ -13,23 +13,24 @@
 
         <EditText
             android:id="@+id/Search_EditText"
-            android:layout_width="250sp"
+            android:layout_width="200sp"
             android:layout_height="40sp"
             android:layout_marginHorizontal="@dimen/edit_text_margin"
             android:background="@drawable/edit_text_shape"
+            android:gravity="center"
             android:hint="@string/search_text"
             android:importantForAutofill="no"
             android:inputType="text"
-            android:padding="10sp"
-            android:gravity="center"
+            android:paddingTop="10sp"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHighlight="@color/colorPrimaryDark"
             android:textColorHint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.151"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.07" />
+            app:layout_constraintVertical_bias="0.069" />
 
         <ImageView
             android:layout_width="40dp"
@@ -37,7 +38,7 @@
             android:src="@drawable/magnifying_glass"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.913"
+            app:layout_constraintHorizontal_bias="0.851"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.069" />
